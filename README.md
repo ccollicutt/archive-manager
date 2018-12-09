@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/ccollicutt/archive-manager.svg?branch=master)](https://travis-ci.com/ccollicutt/archive-manager)
+
 # Archive Manager
 
 Manage files in directories in a backup root directory. It will ensure the total size of all the files in the directories are less than a maximum size, but will always keep the minimum number of files. Once the total size is ensured, it will then delete files until the maximum number of files exist.
