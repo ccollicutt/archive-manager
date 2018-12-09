@@ -1,0 +1,11 @@
+---
+
+max_num_backup_files: 36
+min_num_backup_files: 24
+# in bytes
+max_dir_size: 1048576
+backup_root: "/var/tmp/archive-manager-backup"
+backup_dirs:
+  - "backup-1"
+  - "backup-2"
+  
