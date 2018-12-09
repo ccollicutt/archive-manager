@@ -22,14 +22,20 @@ class ArchiveManagerTestCase(unittest.TestCase):
         data, _ = p.communicate()
         return 'i' in data
 
-    def test_newest_oldest(self):
-        """Ensure the first file is the oldest and the last file is the newest"""
+    def generic_archive(self):
+        """create a generic archive"""
         self.create_test_files()
         filename = self.create_test_config()
         cfg = get_config(filename)
         cfg['backup_root'] = self.test_dir
         verbose = None
         archive = ArchiveManager(cfg, verbose)
+        return archive
+
+    def test_newest_oldest(self):
+        """Ensure the first file is the oldest and the last file is the newest"""
+        archive = self.generic_archive()
+
         for dir in archive.backup_dirs: 
             files = archive.get_files(dir)
             oldest_file = files[-1]
@@ -83,12 +89,7 @@ class ArchiveManagerTestCase(unittest.TestCase):
 
     def test_bad_file_names(self):
         """Put non tar.gz files into the directory"""
-        self.create_test_files()
-        filename = self.create_test_config()
-        cfg = get_config(filename)
-        cfg['backup_root'] = self.test_dir
-        verbose = None
-        archive = ArchiveManager(cfg, verbose)
+        archive = self.generic_archive()
 
         bad_files = []
         bad_files.append("shouldntexist")
@@ -115,12 +116,8 @@ class ArchiveManagerTestCase(unittest.TestCase):
                 self.assertNotIn(f, files)
 
     def test_delete_oldest(self):
-        self.create_test_files()
-        filename = self.create_test_config()
-        cfg = get_config(filename)
-        cfg['backup_root'] = self.test_dir
-        verbose = None
-        archive = ArchiveManager(cfg, verbose)
+        archive = self.generic_archive()
+
         for dir in archive.backup_dirs:   
             files = archive.get_files(dir)
             try:
@@ -142,12 +139,8 @@ class ArchiveManagerTestCase(unittest.TestCase):
             self.assertEqual(files[-1], "97-test.tar.gz")
 
     def test_get_files(self):
-        self.create_test_files()
-        filename = self.create_test_config()
-        cfg = get_config(filename)
-        cfg['backup_root'] = self.test_dir
-        verbose = None
-        archive = ArchiveManager(cfg, verbose)     
+        archive = self.generic_archive()
+
         for dir in archive.backup_dirs:
             files = archive.get_files(dir)
             oldest_file = files[-1]
@@ -156,23 +149,15 @@ class ArchiveManagerTestCase(unittest.TestCase):
             self.assertEqual(newest_file, "0-test.tar.gz")
 
     def test_get_size(self):
-        self.create_test_files()
-        filename = self.create_test_config()
-        cfg = get_config(filename)
-        cfg['backup_root'] = self.test_dir
-        verbose = None
-        archive = ArchiveManager(cfg, verbose)     
+        archive = self.generic_archive()
+
         for dir in archive.backup_dirs:
             size = archive.get_size(dir)  
             self.assertEqual(size, 5171200)
 
     def test_keep_max_files(self):
-        self.create_test_files()
-        filename = self.create_test_config()
-        cfg = get_config(filename)
-        cfg['backup_root'] = self.test_dir
-        verbose = None
-        archive = ArchiveManager(cfg, verbose)
+        archive = self.generic_archive()
+
         for dir in archive.backup_dirs:
             try:
                 archive.keep_max_files(dir)
