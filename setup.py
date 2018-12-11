@@ -10,6 +10,7 @@ setup(
     author_email='Curtis Collicutt',
     description='Manager files in a directory',
     long_description=readme,
+    python_requires='>=2.7, !=3.*',
     license="Apache License, Version 2.0",
     packages=['archive_manager'],
     install_requires=[
@@ -17,7 +18,8 @@ setup(
         'pyyaml'
     ],
     tests_require=[
-        'fallocate'
+        'fallocate',
+        'coverage'
     ],
     entry_points={
         'console_scripts': [
