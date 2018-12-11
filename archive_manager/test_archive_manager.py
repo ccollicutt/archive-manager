@@ -32,6 +32,23 @@ class ArchiveManagerTestCase(unittest.TestCase):
         archive = ArchiveManager(cfg, verbose)
         return archive
 
+    # FIXME: This test doesn't do anything b/c delete_until_min gets the files itself...
+    # Is it possible to insert a pause somehow into the function and delete a file?
+    # def test_deleted_file_while_running(self):
+    #     """delete a file while running"""
+    #     archive = self.generic_archive()
+    #     archive.max_dir_size = 3145728
+    #     for d in archive.backup_dirs:
+    #         files = archive.get_files(d)
+    #         filepath = os.path.join(archive.backup_root, d, files[80])
+    #         try: 
+    #             print "removiving %s" % filepath
+    #             os.remove(filepath)
+    #         except:
+    #             self.fail("can't remove file")
+            
+    #         archive.delete_until_size_or_min(d)
+
     def test_newest_oldest(self):
         """Ensure the first file is the oldest and the last file is the newest"""
         archive = self.generic_archive()
