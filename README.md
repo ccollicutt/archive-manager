@@ -6,10 +6,6 @@ Manage files in directories in a backup root directory. It will ensure the total
 
 The assumption is that some other process, such as a backup script, is generating "archives" in a directory or directories. `archive-manager` will help to manage those files to ensure that there is always room for the most recent backup file.
 
-## Limitations
-
-* `archive-manager` currently only looks for `.tar.gz` files, which is a bit of a silly limitation, but that will change soon enough
-
 ## Requirements
 
 * This will probably only run on Linux
