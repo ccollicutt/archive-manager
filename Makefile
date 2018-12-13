@@ -1,4 +1,4 @@
-VERSION = 0.1.0
+VERSION = 0.1.1
 ITERATION = 0
 RPM_NAME = archive-manager-${VERSION}-${ITERATION}.x86_64.rpm
 VENV = ${VIRTUAL_ENV}
