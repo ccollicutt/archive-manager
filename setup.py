@@ -5,10 +5,11 @@ with open('README.md', 'r') as f:
 
 setup(
     name='archive-manager',
-    version='0.1',
+    version='0.1.1',
     author='Curtis Collicutt',
     author_email='Curtis Collicutt',
-    description='Manager files in a directory',
+    description='Manage backup archive files',
+    url="https://github.com/ccollicutt/archive-manager",
     long_description=readme,
     python_requires='>=2.7, !=3.*',
     license="Apache License, Version 2.0",

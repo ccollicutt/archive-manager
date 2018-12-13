@@ -137,9 +137,7 @@ class ArchiveManagerTestCase(unittest.TestCase):
         except:
            pass
 
-    
         for dir in archive.backup_dirs:  
-
             # Create bad files
             for f in file_extension:
                 bf = "%s%s" % (bad_filename, f)
@@ -156,7 +154,7 @@ class ArchiveManagerTestCase(unittest.TestCase):
             # Bad files should not be included in the files list
             for f in file_extension:
                 bf = "%s%s" % (bad_filename, f) 
-                self.assertNotIn(f, files)
+                self.assertNotIn(bf, files)
 
     def test_delete_oldest(self):
         archive = self.generic_archive()
