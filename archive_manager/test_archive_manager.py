@@ -22,12 +22,13 @@ class ArchiveManagerTestCase(unittest.TestCase):
         data, _ = p.communicate()
         return 'i' in data
 
-    def generic_archive(self):
+    def generic_archive(self, backup_extension=".tar.gz"):
         """create a generic archive"""
-        self.create_test_files()
+        self.create_test_files(backup_extension)
         filename = self.create_test_config()
         cfg = get_config(filename)
         cfg['backup_root'] = self.test_dir
+        cfg['backup_extension'] = backup_extension
         verbose = None
         archive = ArchiveManager(cfg, verbose)
         return archive
@@ -48,6 +49,18 @@ class ArchiveManagerTestCase(unittest.TestCase):
     #             self.fail("can't remove file")
             
     #         archive.delete_until_size_or_min(d)
+
+    def test_custom_backup_extention(self):
+        backup_extension = ".tgz"
+        archive = self.generic_archive(backup_extension)
+        self.assertEqual(archive.backup_extension, backup_extension)
+        for d in archive.backup_dirs:
+            files = archive.get_files(d)
+            self.assertEqual(len(files), 100)
+            last_file = "99-test%s" % backup_extension
+            first_file = "0-test%s" % backup_extension
+            self.assertEqual(files[-1], last_file)
+            self.assertEqual(files[0], first_file)   
 
     def test_newest_oldest(self):
         """Ensure the first file is the oldest and the last file is the newest"""
@@ -108,17 +121,29 @@ class ArchiveManagerTestCase(unittest.TestCase):
         """Put non tar.gz files into the directory"""
         archive = self.generic_archive()
 
-        bad_files = []
-        bad_files.append("shouldntexist")
-        bad_files.append("shouldntexist.tar")
-        bad_files.append("shouldntexist.gz")
-        bad_files.append("shouldntexist.txt")
+        # FIXME: a better way to create these kind of files?
+        bad_filename = "shouldntexist"
+        file_extension = []
+        file_extension.append('.tar.gz')
+        file_extension.append('.tgz')
+        file_extension.append('.zip')
+        file_extension.append('.txt')
+        file_extension.append('.rar')
+        file_extension.append('.rpm')
 
+        # If the custom backup extension is in the list, remove it
+        try:
+            file_extension.remove(archive.backup_extension)
+        except:
+           pass
+
+    
         for dir in archive.backup_dirs:  
 
             # Create bad files
-            for f in bad_files:
-                filepath = os.path.join(archive.backup_root, dir, f)
+            for f in file_extension:
+                bf = "%s%s" % (bad_filename, f)
+                filepath = os.path.join(archive.backup_root, dir, bf)
                 with open(filepath, "w+") as f:
                     size = 1024
                     with open(filepath, "w+b") as f:
@@ -129,7 +154,8 @@ class ArchiveManagerTestCase(unittest.TestCase):
             self.assertEqual(len(files), 100)
 
             # Bad files should not be included in the files list
-            for f in bad_files:
+            for f in file_extension:
+                bf = "%s%s" % (bad_filename, f) 
                 self.assertNotIn(f, files)
 
     def test_delete_oldest(self):
@@ -252,7 +278,7 @@ class ArchiveManagerTestCase(unittest.TestCase):
             pass
         return filename
 
-    def create_test_files(self):
+    def create_test_files(self, backup_extension=".tar.gz"):
         filename = self.create_test_config()
         cfg = get_config(filename)
         cfg['backup_root'] = self.test_dir
@@ -262,7 +288,7 @@ class ArchiveManagerTestCase(unittest.TestCase):
             if not os.path.exists(full_dir):
                 os.makedirs(full_dir)
             for i in range(100):
-                filename = str(i) + "-test.tar.gz"
+                filename = str(i) + "-test%s" % backup_extension
                 filepath = os.path.join(full_dir, filename)
 
                 # Note the use of fallocate here to create files quickly that have a
@@ -272,9 +298,6 @@ class ArchiveManagerTestCase(unittest.TestCase):
                     with open(filepath, "w+b") as f:
                         fallocate(f, 0, size)
                     f.close()
-
-                # TODO: Create some non .tar.gz filenames to validate that get_files
-                # only picks up tar.gz files.
 
                 # Here we are setting the mtime so that cloud archive manager
                 # has some newer and older files to use, as far as its concerned

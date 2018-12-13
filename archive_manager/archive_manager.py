@@ -21,6 +21,8 @@ class ArchiveManagerException(Exception):
 class ArchiveManager(object):
     
     def __init__(self, cfg, verbose):
+
+        # Required variables
         try:
             self.backup_root = cfg['backup_root']
             self.backup_dirs = cfg['backup_dirs']
@@ -30,6 +32,12 @@ class ArchiveManager(object):
             self.verbose = verbose
         except:
             raise ArchiveManagerException('could not load required config variables')
+
+        # Optional variables
+        try:
+            self.backup_extension = cfg['backup_extension']
+        except:
+            self.backup_extension = BACKUP_EXTENSION
 
         if self.min_num_backup_files > self.max_num_backup_files:
             raise ArchiveManagerException('min backup files larger than max')
@@ -92,7 +100,7 @@ class ArchiveManager(object):
         all_files = []
         for unused_cdate, path in sorted(entries):
             # Only add it if it ends with BACKUP_EXTENSION
-            if path.endswith(BACKUP_EXTENSION):
+            if path.endswith(self.backup_extension):
                 all_files.append(os.path.basename(path))
 
         # Make oldest files first on the array

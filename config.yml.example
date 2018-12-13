@@ -1,5 +1,6 @@
 ---
 
+# backup_extension: ".tar.gz"
 max_num_backup_files: 36
 min_num_backup_files: 24
 # in bytes
