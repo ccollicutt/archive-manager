@@ -20,3 +20,6 @@ rpm:
 coverage:
 	coverage run ${VIRTUAL_ENV}/bin/archive-manager -c ${PWD}/config.yml.example -v
 	coverage report
+
+cloc:
+	cloc .
