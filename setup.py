@@ -5,14 +5,17 @@ with open('README.md', 'r') as f:
 
 setup(
     name='archive-manager',
-    version='0.1.1',
+    version='0.1.2',
     author='Curtis Collicutt',
     author_email='Curtis Collicutt',
     description='Manage backup archive files',
     url="https://github.com/ccollicutt/archive-manager",
+    download_url="https://github.com/ccollicutt/archive-manager/archive/v0.1.2.tar.gz",
     long_description=readme,
     python_requires='>=2.7, !=3.*',
     license="Apache License, Version 2.0",
+    keywords = ['backup', 'file manager', 'archive', 'archive manager'],
+    test_suite='archive_manager.test_archive_manager',
     packages=['archive_manager'],
     install_requires=[
         'click',
