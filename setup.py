@@ -8,7 +8,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='archive-manager',
-    version='0.1.2',
+    version='0.1.3',
     author='Curtis Collicutt',
     author_email='curtis@serverascode.com',
     description='Manage backup archive files',
