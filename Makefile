@@ -22,5 +22,10 @@ coverage:
 	coverage run ${VIRTUAL_ENV}/bin/archive-manager -c ${PWD}/config.yml.example -v
 	coverage report
 
+pypi:
+	python setup.py sdist
+	#pip install twine
+	twine upload dist/*
+
 cloc:
 	cloc .

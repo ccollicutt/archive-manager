@@ -7,7 +7,7 @@ setup(
     name='archive-manager',
     version='0.1.2',
     author='Curtis Collicutt',
-    author_email='Curtis Collicutt',
+    author_email='curtis@serverascode.com',
     description='Manage backup archive files',
     url="https://github.com/ccollicutt/archive-manager",
     download_url="https://github.com/ccollicutt/archive-manager/archive/v0.1.2.tar.gz",
