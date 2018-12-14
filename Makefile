@@ -7,7 +7,7 @@ PYTHON=/usr/bin/python
 run:
 	docker run -i -t --rm --name=archive-manager archive-manager
 
-image: rpm 
+image:
 	docker build -t archive-manager .
 
 test:
