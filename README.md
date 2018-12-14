@@ -17,9 +17,7 @@ Future releases will include installation via pip and RPM.
 ```bash
 virtualenv archive-manager-venv
 . archive-manager-venv/bin/activate
-git clone <this repo>
-cd archive-manager
-pip install .
+pip install archive-manager
 ```
 
 Now that it's installed, the `archive-manager` command should be available.
