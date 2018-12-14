@@ -1,7 +1,10 @@
 from setuptools import setup
 
-with open('README.md', 'r') as f:
-    readme = f.read()
+# read the contents of your README file
+from os import path
+this_directory = path.abspath(path.dirname(__file__))
+with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
+    long_description = f.read()
 
 setup(
     name='archive-manager',
@@ -11,7 +14,8 @@ setup(
     description='Manage backup archive files',
     url="https://github.com/ccollicutt/archive-manager",
     download_url="https://github.com/ccollicutt/archive-manager/archive/v0.1.2.tar.gz",
-    long_description=readme,
+    long_description=long_description,
+    long_description_content_type='text/markdown'
     python_requires='>=2.7, !=3.*',
     license="Apache License, Version 2.0",
     keywords = ['backup', 'file manager', 'archive', 'archive manager'],
