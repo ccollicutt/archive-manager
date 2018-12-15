@@ -3,7 +3,7 @@ VENV = ${VIRTUAL_ENV}
 version_file := VERSION
 VERSION := $(shell cat ${version_file})
 
-run:
+run: image
 	docker run -i -t --rm --name=archive-manager archive-manager:${VERSION} /bin/bash
 
 image:
