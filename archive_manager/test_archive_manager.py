@@ -33,7 +33,8 @@ class ArchiveManagerTestCase(unittest.TestCase):
         archive = ArchiveManager(cfg, verbose)
         return archive
 
-    def test_custom_backup_extention(self):
+    def test_custom_backup_extension(self):
+        """Test that custom backup extensions work"""
         backup_extension = ".tgz"
         archive = self.generic_archive(backup_extension)
         self.assertEqual(archive.backup_extension, backup_extension)
@@ -43,8 +44,18 @@ class ArchiveManagerTestCase(unittest.TestCase):
             last_file = "99-test%s" % backup_extension
             first_file = "0-test%s" % backup_extension
             self.assertEqual(files[-1], last_file)
-            self.assertEqual(files[0], first_file)   
+            self.assertEqual(files[0], first_file)
 
+            # Delete one file
+            try:
+                archive.delete_oldest(d, files)
+            except:
+                self.fail("delete oldest failed")
+     
+            self.assertEqual(len(files), 99)
+            filename = "98-test%s" % backup_extension
+            self.assertEqual(files[-1], filename)
+              
     def test_newest_oldest(self):
         """Ensure the first file is the oldest and the last file is the newest"""
         archive = self.generic_archive()
@@ -101,7 +112,7 @@ class ArchiveManagerTestCase(unittest.TestCase):
         self.assertEqual(files[0], '0-test.tar.gz')
 
     def test_bad_file_names(self):
-        """Put non tar.gz files into the directory"""
+        """Test that only the backup_extension files are picked up"""
         archive = self.generic_archive()
 
         # FIXME: a better way to create these kind of files?
@@ -140,6 +151,7 @@ class ArchiveManagerTestCase(unittest.TestCase):
                 self.assertNotIn(bf, files)
 
     def test_delete_oldest(self):
+        """Test that when deleted_oldest is called that the oldest file is deleted"""
         archive = self.generic_archive()
 
         for dir in archive.backup_dirs:   
