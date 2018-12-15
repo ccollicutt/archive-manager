@@ -8,7 +8,9 @@ with io.open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 with io.open(path.join(this_directory, 'VERSION'), encoding='utf-8') as f:
-    version = f.read()
+    # Just read first line
+    version = f.readline()
+    version = version.strip()
 
 download_url = "https://github.com/ccollicutt/archive-manager/archive/v%s.tar.gz" % version
 

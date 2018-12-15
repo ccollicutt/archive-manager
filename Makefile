@@ -1,14 +1,13 @@
-VERSION = `cat VERSION`
-ITERATION = 0
-RPM_NAME = archive-manager-${VERSION}-${ITERATION}.x86_64.rpm
 VENV = ${VIRTUAL_ENV}
-PYTHON=/usr/bin/python
+
+version_file := VERSION
+VERSION := $(shell cat ${version_file})
 
 run:
-	docker run -i -t --rm --name=archive-manager archive-manager
+	docker run -i -t --rm --name=archive-manager archive-manager:${VERSION} /bin/bash
 
 image:
-	docker build -t archive-manager .
+	docker build -t archive-manager:${VERSION} . 
 
 test:
 	/usr/bin/env python archive_manager/test_archive_manager.py
@@ -29,6 +28,7 @@ pypi:
 
 release:
 	# TBD
+	# run tests
 	# tag? upload to pypi?
 
 cloc:
