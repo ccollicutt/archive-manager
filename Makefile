@@ -1,4 +1,4 @@
-VERSION = 0.1.3
+VERSION = `cat VERSION`
 ITERATION = 0
 RPM_NAME = archive-manager-${VERSION}-${ITERATION}.x86_64.rpm
 VENV = ${VIRTUAL_ENV}
@@ -25,7 +25,11 @@ coverage:
 pypi:
 	python setup.py sdist
 	#pip install twine
-	twine upload dist/*
+	twine upload dist/archive-manager-${VERSION}.tar.gz
+
+release:
+	# TBD
+	# tag? upload to pypi?
 
 cloc:
 	cloc .
