@@ -58,7 +58,7 @@ class ArchiveManager(object):
         file_to_delete = dirfiles.pop()
         full_path = os.path.join(dir_path, file_to_delete)
 
-        if  full_path.startswith(dir_path) and full_path.endswith(BACKUP_EXTENSION) and len(dir_path) > 1:
+        if  full_path.startswith(dir_path) and full_path.endswith(self.backup_extension) and len(dir_path) > 1:
             if self.verbose:
                 msg = "Deleting file %s" % full_path
                 logging.info(msg)
