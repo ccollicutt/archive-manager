@@ -10,7 +10,7 @@ CONFIG_FILE = "/etc/archive-manager/config.yml"
 @click.option('--config', '-c', required=False, help='Config file location', type=str)
 @click.option('--verbose', '-v', required=False, help='Set to verbose mode', is_flag=True)
 def cli(config, verbose):
-    """Manage size and number of tar.gz files in a set of directories"""
+    """Manage files in backup directories"""
 
     if config:
         config_file = config
