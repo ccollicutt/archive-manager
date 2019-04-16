@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 root=/var/tmp/archive-manager-backup
 b1=$root/backup-1
