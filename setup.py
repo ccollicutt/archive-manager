@@ -25,7 +25,7 @@ setup(
     download_url=download_url,
     long_description=long_description,
     long_description_content_type='text/markdown',
-    python_requires='>=2.7, !=3.*',
+    python_requires='>=3.6.6',
     license="Apache License, Version 2.0",
     keywords = ['backup', 'file manager', 'archive', 'archive manager'],
     test_suite='archive_manager.test_archive_manager',
