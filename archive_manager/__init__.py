@@ -1,1 +1,1 @@
-from archive_manager import ArchiveManager, ArchiveManagerException
+from .archive_manager import ArchiveManager, ArchiveManagerException

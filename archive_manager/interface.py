@@ -1,6 +1,6 @@
 import click
-from archive_manager import ArchiveManager, ArchiveManagerException
-from module import get_config
+from .archive_manager import ArchiveManager, ArchiveManagerException
+from .module import get_config
 import sys
 import os
 
@@ -20,14 +20,14 @@ def cli(config, verbose):
     # Load the config
     try:
         cfg = get_config(config_file)
-    except RuntimeError, err:
+    except RuntimeError as err:
         msg = "ERROR: %s" % str(err)
         click.echo(msg, err=True)
         sys.exit(1)
      
     try:
         archive = ArchiveManager(cfg, verbose)
-    except ArchiveManagerException, err:
+    except ArchiveManagerException as err:
         msg = "ERROR: %s" % str(err)
         click.echo(msg, err=True)
         sys.exit(1)
@@ -36,14 +36,14 @@ def cli(config, verbose):
 
         try:
             archive.delete_until_size_or_min(d)
-        except ArchiveManagerException, err:
+        except ArchiveManagerException as err:
             msg = "ERROR: %s" % str(err)
             click.echo(msg, err=True)
             sys.exit(1)
 
         try:
             archive.keep_max_files(d)
-        except ArchiveManagerException, err:
+        except ArchiveManagerException as err:
             msg = "ERROR: %s" % str(err)
             click.echo(msg, err=True)
             sys.exit(1)

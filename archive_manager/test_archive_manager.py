@@ -17,11 +17,6 @@ class ArchiveManagerTestCase(unittest.TestCase):
     def tearDown(self):
         shutil.rmtree(self.test_dir)
 
-    def is_immutable(self, fname):
-        p = subprocess.Popen(['lsattr', fname], bufsize=1, stdout=subprocess.PIPE)
-        data, _ = p.communicate()
-        return 'i' in data
-
     def generic_archive(self, backup_extension=".tar.gz"):
         """create a generic archive"""
         self.create_test_files(backup_extension)
@@ -71,45 +66,6 @@ class ArchiveManagerTestCase(unittest.TestCase):
             newest_file_mtime = os.stat(filepath).st_mtime
 
             self.assertGreater(newest_file_mtime, oldest_file_mtime)
-
-    def test_delete_read_only_file(self):
-        """Make one of the files immutable and test if delete will fail"""
-        self.create_test_files()
-        filename = self.create_test_config()
-        cfg = get_config(filename)
-        cfg['backup_root'] = self.test_dir
-        # 3mb, create_test_files should create 5mb of files
-        cfg['max_dir_size'] = 3145728 
-        verbose = None
-        archive = ArchiveManager(cfg, verbose)
-        # Just use one directory this time
-        dir = archive.backup_dirs[0]
-
-        # Set this file read only
-        filepath = os.path.join(archive.backup_root, dir, "99-test.tar.gz")
-        # TODO: May be better to simply delete the file than to run sudo chattr...
-        os.system("sudo chattr +i " + filepath)
-        assert self.is_immutable(filepath) is True
-
-        try:
-            archive.delete_until_size_or_min(dir)
-        except:
-            pass
-
-        # Now make it mutable again
-        os.system("sudo chattr -i " + filepath)
-        assert self.is_immutable(filepath) is False
-
-        try:
-            archive.delete_until_size_or_min(dir)
-        except:
-            self.fail("Failed to delete file unexpectedly")
-
-        files = archive.get_files(dir)
-        # To get to 3mb of files we'll need to delete down to 77 files
-        self.assertEqual(len(files), 77)
-        self.assertEqual(files[-1], '76-test.tar.gz')
-        self.assertEqual(files[0], '0-test.tar.gz')
 
     def test_bad_file_names(self):
         """Test that only the backup_extension files are picked up"""
@@ -217,7 +173,7 @@ class ArchiveManagerTestCase(unittest.TestCase):
         for dir in archive.backup_dirs:
             try:
                 archive.delete_until_size_or_min(dir)
-            except ArchiveManagerException, err:
+            except ArchiveManagerException as err:
                 self.fail("ERROR: %s\n" % str(err))
 
             # I guess do this here, as the actual files is in the function
@@ -249,7 +205,7 @@ class ArchiveManagerTestCase(unittest.TestCase):
         try:
             verbose = None
             unused_archive = ArchiveManager(cfg, verbose)
-        except ArchiveManagerException, err:
+        except ArchiveManagerException as err:
             self.fail("ERROR: %s\n" % str(err))
 
     def create_test_config(self):
@@ -323,7 +279,7 @@ class ArchiveManagerTestCase(unittest.TestCase):
         verbose = None
         try:
             archive = ArchiveManager(cfg, verbose)
-        except ArchiveManagerException, err:
+        except ArchiveManagerException as err:
             self.fail("ERROR: %s\n" % str(err))
 
         backup_dirs_test = []
